@@ -89,7 +89,7 @@
   font-size: 3rem;
 }
 
-/* Responsive Modal Adjustments */
+/* Responsive Modal Adjustment*/
 @media (max-width: 768px) {
   .info-modal {
     width: 90vw;
@@ -104,3 +104,5 @@
     aspect-ratio: 16 / 9;
   }
 }
+
+

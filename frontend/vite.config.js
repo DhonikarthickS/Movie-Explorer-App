@@ -6,3 +6,5 @@ export default defineConfig({
   base: "Movie-Explorer-App",
   plugins: [react()],
 });
+
+

@@ -1,43 +1,69 @@
-import "../css/Home.css";
+import "../css/Modal.css";
 
 function MovieInfoModal({ data, setIsOpen }) {
   if (!data) return null;
 
   const processedLink = data.trailer?.replace("watch?v=", "embed/");
 
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      setIsOpen(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      setIsOpen(false);
+    }
+  };
+
   return (
-    <div className="info-modal">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h1>{data.title}</h1>
-        <span
-          style={{
-            cursor: "pointer",
-            fontSize: "32px",
-            lineHeight: "1",
-            marginLeft: "20px",
-          }}
-          title="Close"
-          onClick={() => setIsOpen(false)}
-        >
-          &#10060;
-        </span>
+    <div
+      className="modal-backdrop"
+      onClick={handleBackdropClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={-1}
+    >
+      <div className="info-modal" tabIndex={0}>
+        <div className="modal-header">
+          <h1 className="modal-title">{data.title}</h1>
+          <button
+            className="modal-close"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close modal"
+            title="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="modal-content">
+          {processedLink && (
+            <div className="video-container">
+              <iframe
+                src={processedLink}
+                title={`${data.title} trailer`}
+                allowFullScreen
+              />
+            </div>
+          )}
+
+          {data.plot_overview && (
+            <p className="modal-description">{data.plot_overview}</p>
+          )}
+
+          {data.user_rating && (
+            <div className="modal-rating">
+              <div className="rating-score">{data.user_rating}</div>
+              <div className="rating-text">/10</div>
+              <div className="rating-stars">
+                {"★".repeat(Math.floor(data.user_rating / 2))}
+                {"☆".repeat(5 - Math.floor(data.user_rating / 2))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-      {processedLink && (
-        <iframe width="700" height="550" src={processedLink}></iframe>
-      )}
-      <p>{data.plot_overview}</p>
-      <h2>
-        <span style={{ fontSize: "48px", fontWeight: "bold" }}>
-          {data.user_rating}
-        </span>
-        /10
-      </h2>
     </div>
   );
 }
